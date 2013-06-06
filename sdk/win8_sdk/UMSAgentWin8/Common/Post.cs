@@ -16,7 +16,7 @@ using System;
 using System.Net;
 using System.Text;
 using System.IO;
-using System.Windows.Threading;
+//using System.Windows.Threading;
 using UMSAgent.Common;
 using UMSAgent.CallBcak;
 using UMSAgent.MyObject;
@@ -82,7 +82,7 @@ namespace UMSAgent.Common
 
             postStream.Write(byteArray, 0, parametersString.Length);
 
-            postStream.Close();
+            postStream.Flush();
 
             // Start the asynchronous operation to get the response
             try
@@ -132,9 +132,9 @@ namespace UMSAgent.Common
 
             // Close the stream object
 
-            streamResponse.Close();
+            streamResponse.Flush();
 
-            streamRead.Close();
+            //streamRead.close();
            
             ret = responseString;
             

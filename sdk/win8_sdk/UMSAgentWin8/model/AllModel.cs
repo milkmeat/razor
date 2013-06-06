@@ -15,20 +15,20 @@
 using System;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
+//using System.Windows.Controls;
+//using System.Windows.Documents;
+//using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+//using System.Windows.Media;
+//using System.Windows.Media.Animation;
+//using System.Windows.Shapes;
 using System.Collections.Generic;
 using UMSAgent.Common;
 using System.Reflection;
-using Microsoft.Phone.Info;
+//using Microsoft.Phone.Info;
 using System.Globalization;
 using UMSAgent.MyObject;
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using UMSAgent.UMS;
 
 
@@ -50,10 +50,10 @@ namespace UMSAgent.Model
         {
             Event e = new Event();
             e.event_identifier = eventid;
-            e.activity =HttpUtility.UrlEncode( pagename);
+            e.activity =WebUtility.UrlEncode( pagename);
             e.time = Utility.getTime();
             e.appkey = key;
-            e.label = HttpUtility.UrlEncode(label);
+            e.label = WebUtility.UrlEncode(label);
             e.version = Utility.getApplicationVersion();
             e.acc = acc;
             return e;
@@ -84,15 +84,15 @@ namespace UMSAgent.Model
             ClientData clientdata = new ClientData();
             clientdata.platform = "windows phone";
             clientdata.os_version = Utility.getOsVersion();
-            clientdata.language =HttpUtility.UrlEncode( CultureInfo.CurrentCulture.DisplayName);
+            clientdata.language =WebUtility.UrlEncode( CultureInfo.CurrentCulture.DisplayName);
             clientdata.resolution = UMSApi.device_resolution;
             clientdata.deviceid = Utility.getDeviceId();
-            clientdata.devicename = DeviceExtendedProperties.GetValue("DeviceName").ToString();
+            clientdata.devicename = "";// DeviceExtendedProperties.GetValue("DeviceName").ToString();
             clientdata.version = Utility.getApplicationVersion();
             clientdata.appkey = key;
             clientdata.time = Utility.getTime();
-            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
-            if (settings["autolocation"].ToString().Equals("1"))
+            Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (settings.Values["autolocation"].ToString().Equals("1"))
             {
                 double[] location = Utility.GetLocationProperty();
                 if (location.Length == 2)

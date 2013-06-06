@@ -15,15 +15,15 @@
 using System;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
+//using System.Windows.Controls;
+//using System.Windows.Documents;
+//using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+//using System.Windows.Media;
+//using System.Windows.Media.Animation;
+//using System.Windows.Shapes;
 using UMSAgent.MyObject;
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using System.Collections.Generic;
 using System.Text;
 using UMSAgent.UMS;
@@ -129,19 +129,19 @@ namespace UMSAgent.Common
             AllInfo allinfo = new AllInfo();
             allinfo.appkey = UmsManager.appkey;
             string ret = "";
-            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
            
-            if (settings.Contains("clientdata"))
+            if (settings.Values.ContainsKey("clientdata"))
             {
-                List<ClientData> list_client_data = (List<ClientData>)settings["clientdata"];
+                List<ClientData> list_client_data = (List<ClientData>)settings.Values["clientdata"];
                 allinfo.clientData = list_client_data;
             }
 
             
-            if (settings.Contains("eventdata"))
+            if (settings.Values.ContainsKey("eventdata"))
             {
-                List<Event> list_event_data = (List<Event>)settings["eventdata"];
+                List<Event> list_event_data = (List<Event>)settings.Values["eventdata"];
                 allinfo.eventInfo = list_event_data;
             }
 
@@ -163,9 +163,9 @@ namespace UMSAgent.Common
             }
            
            
-            if (settings.Contains("pageinfo"))
+            if (settings.Values.ContainsKey("pageinfo"))
             {
-                List<PageInfo> list_pageinfo_data = (List<PageInfo>)settings["pageinfo"];
+                List<PageInfo> list_pageinfo_data = (List<PageInfo>)settings.Values["pageinfo"];
                
                 allinfo.activityInfo = list_pageinfo_data;
             }

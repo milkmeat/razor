@@ -129,6 +129,7 @@
     <Compile Include="MyObject\UpdateRet.cs" />
     <Compile Include="MyObject\UserRepolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UMSApi.cs" />
     <Compile Include="UMS\UmsManager.cs" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">

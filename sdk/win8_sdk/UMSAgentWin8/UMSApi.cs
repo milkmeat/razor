@@ -12,14 +12,16 @@
  * @filesource
  */
 
-using Microsoft.Phone.Shell;
+//using Microsoft.Phone.Shell;
 using System;
 using System.Windows;
 using UMSAgent.Common;
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using UMSAgent.CallBcak;
 using System.Threading;
 using UMSAgent.UMS;
+using Windows.System.Threading;
+using Windows.UI.Xaml;
 
 
 namespace UMSAgent
@@ -64,8 +66,11 @@ namespace UMSAgent
                 registerEvent();
                 manager = new DataManager(appKey);
                 device_resolution = Utility.getResolution();
-                new Thread(new ThreadStart(postClientData)).Start();
-                new Thread(new ThreadStart(postAllData)).Start();
+                //new Thread(new ThreadStart(postClientData)).Start();
+                //new Thread(new ThreadStart(postAllData)).Start();
+                //no need to await
+                ThreadPool.RunAsync((source) => { postClientData();});
+                ThreadPool.RunAsync((source) => { postAllData(); });
             }
             
         }
@@ -74,7 +79,14 @@ namespace UMSAgent
         {
             
            // PhoneApplicationService.Current.Closing += new EventHandler<ClosingEventArgs>(UMS_Closing);
-            Application.Current.UnhandledException+=new EventHandler<ApplicationUnhandledExceptionEventArgs>(onCrash);
+           //ying TODO: fix for win8
+           // Application.Current.UnhandledException+=new EventHandler<ApplicationUnhandledExceptionEventArgs>(onCrash);
+            Application.Current.UnhandledException += Current_UnhandledException;
+        }
+
+        static void Current_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            onCrash(sender, e);
         }
        
 
@@ -88,22 +100,22 @@ namespace UMSAgent
             manager.allDataProceed();
         }
 
-        static void app_Activiated(object sender, ActivatedEventArgs e)
-        {
+        //static void app_Activiated(object sender, ActivatedEventArgs e)
+        //{
             
-           // throw new NotImplementedException();
-        }
+        //   // throw new NotImplementedException();
+        //}
 
-        static void app_Deactivated(object sender, DeactivatedEventArgs e)
-        {
-           // throw new NotImplementedException();
-        }
+        //static void app_Deactivated(object sender, DeactivatedEventArgs e)
+        //{
+        //   // throw new NotImplementedException();
+        //}
       
 
-        static void app_Closing(object sender, ClosingEventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
+        //static void app_Closing(object sender, ClosingEventArgs e)
+        //{
+        //    //throw new NotImplementedException();
+        //}
 
         //check appKey
         private static bool isAppkeyValid(string appkey)
@@ -125,7 +137,8 @@ namespace UMSAgent
         {
             //if (isNewSession)
             //{
-                new Thread(new ThreadStart(checkNewVersion)).Start();
+                //new Thread(new ThreadStart(checkNewVersion)).Start();
+            ThreadPool.RunAsync((source) => { checkNewVersion(); });
             //}
             
         }
@@ -164,14 +177,15 @@ namespace UMSAgent
         //call_back_process_configdata :this function will be excuted when getting data from server
         public static void updateOnlineConfig()
         { 
-            new Thread(new ThreadStart(getConfigpreference)).Start();
+            //new Thread(new ThreadStart(getConfigpreference)).Start();
+            ThreadPool.RunAsync((source) => { getConfigpreference(); });
         }
         private static void getConfigpreference()
         {
             manager.onlineConfigProceed();
         }
         //on crash
-        private static void onCrash(object obj,ApplicationUnhandledExceptionEventArgs e)
+        private static void onCrash(object sender, UnhandledExceptionEventArgs e)
         {
             manager.crashDataProceed(e);
         }

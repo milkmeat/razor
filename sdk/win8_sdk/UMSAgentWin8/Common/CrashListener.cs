@@ -15,10 +15,10 @@
 using System;
 using System.Net;
 using System.IO;
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using UMSAgent.MyObject;
 using System.Collections.Generic;
-using Microsoft.Phone.Info;
+//using Microsoft.Phone.Info;
 using UMSAgent.UMS;
 namespace UMSAgent.Common
 {
@@ -68,27 +68,27 @@ namespace UMSAgent.Common
         internal static void ReportException(String error, string extra)
         {
 
-            try
-            {
+            //try
+            //{
 
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
+            //    using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+            //    {
 
-                    SafeDeleteFile(store);
+            //        SafeDeleteFile(store);
 
-                    using (TextWriter output = new StreamWriter(store.CreateFile(filename)))
-                    {
-                        output.WriteLine(error);
-                    }
+            //        using (TextWriter output = new StreamWriter(store.CreateFile(filename)))
+            //        {
+            //            output.WriteLine(error);
+            //        }
 
-                }
+            //    }
 
-            }
+            //}
 
-            catch (Exception)
-            {
+            //catch (Exception)
+            //{
 
-            }
+            //}
 
         }
 
@@ -96,78 +96,79 @@ namespace UMSAgent.Common
 
         internal static string CheckForPreviousException()
         {
-            string contents = null;
-            try
-            {
+            //string contents = null;
+            //try
+            //{
                 
 
-                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
+            //    using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+            //    {
 
-                    if (store.FileExists(filename))
-                    {
+            //        if (store.FileExists(filename))
+            //        {
 
-                        using (TextReader reader = new StreamReader(store.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.None)))
-                        {
+            //            using (TextReader reader = new StreamReader(store.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.None)))
+            //            {
 
-                            contents = reader.ReadToEnd();
+            //                contents = reader.ReadToEnd();
 
-                        }
+            //            }
 
-                       // SafeDeleteFile(store);
+            //           // SafeDeleteFile(store);
 
-                    }
+            //        }
 
-                }
+            //    }
 
-                if (contents != null)
-                {
+            //    if (contents != null)
+            //    {
 
-                    //handle crash msg
+            //        //handle crash msg
                     
-                }
+            //    }
 
-            }
+            //}
 
-            catch (Exception)
-            {
+            //catch (Exception)
+            //{
 
-            }
+            //}
 
-            finally
-            {
+            //finally
+            //{
 
-               // SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
+            //   // SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
 
-            }
-            return contents;
-
-        }
-
-
-
-        public static void SafeDeleteFile(IsolatedStorageFile store)
-        {
-
-            try
-            {
-
-                store.DeleteFile(filename);
-
-                IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
-                if (settings.Contains("errordata"))
-                {
-                    settings.Remove("erroedata");
-                }
-
-            }
-
-            catch (Exception)
-            {
-
-            }
+            //}
+            //return contents;
+            return "";
 
         }
+
+
+
+        //public static void SafeDeleteFile(IsolatedStorageFile store)
+        //{
+
+        //    //try
+        //    //{
+
+        //    //    store.DeleteFile(filename);
+
+        //    //    Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        //    //    if (settings.Values.ContainsKey("errordata"))
+        //    //    {
+        //    //        settings.Values.Remove("erroedata");
+        //    //    }
+
+        //    //}
+
+        //    //catch (Exception)
+        //    //{
+
+        //    //}
+
+        //}
 
     }
 

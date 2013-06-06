@@ -14,7 +14,7 @@
 
 using System;
 using System.Net;
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using UMSAgent.Common;
 using UMSAgent.Model;
 using System.Collections.Generic;
@@ -38,15 +38,15 @@ namespace UMSAgent.Model
         }
         public static Session initSessionWithOldData()
         {
-            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            if (settings.Contains("cobub_session_id") && settings.Contains("closeTime"))
+            if (settings.Values.ContainsKey("cobub_session_id") && settings.Values.ContainsKey("closeTime"))
             {
                 try
                 {
                     Session session = new Session();
-                    session.UMS_SESSION_ID = settings["cobub_session_id"].ToString();
-                    session.endtime = (DateTime)settings["closeTime"];
+                    session.UMS_SESSION_ID = settings.Values["cobub_session_id"].ToString();
+                    session.endtime = (DateTime)settings.Values["closeTime"];
                     //DebugTool.Log("old session,session_id is:" + session.UMS_SESSION_ID);
                     return session;
                    
@@ -66,30 +66,30 @@ namespace UMSAgent.Model
             {
                 string sessionid = Guid.NewGuid().ToString();
                 this.UMS_SESSION_ID = sessionid;
-                
-                IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
 
-                if (settings.Contains("cobub_session_id"))
+                Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+                if (settings.Values.ContainsKey("cobub_session_id"))
                 {
-                    settings["cobub_session_id"] = sessionid;
+                    settings.Values["cobub_session_id"] = sessionid;
                 }
                 else
                 {
-                    settings.Add("cobub_session_id", sessionid);
+                    settings.Values.Add("cobub_session_id", sessionid);
                 }
-                if (settings.Contains("pages"))
+                if (settings.Values.ContainsKey("pages"))
                 {
-                    settings.Remove("pages");
+                    settings.Values.Remove("pages");
                 }
-                if (settings.Contains("current_pages"))
+                if (settings.Values.ContainsKey("current_pages"))
                 {
-                    settings.Remove("current_pages");
+                    settings.Values.Remove("current_pages");
                 }
-                if (settings.Contains("duration"))
+                if (settings.Values.ContainsKey("duration"))
                 {
-                    settings.Remove("duration");
+                    settings.Values.Remove("duration");
                 }
-                settings.Save();
+                //settings.Save();
             }
             catch (Exception exception)
             {

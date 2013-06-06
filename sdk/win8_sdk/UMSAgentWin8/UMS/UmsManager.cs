@@ -18,7 +18,7 @@ using System.Windows;
 using UMSAgent.MyObject;
 using UMSAgent.Common;
 
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using UMSAgent.Model;
 
 namespace UMSAgent.UMS
@@ -30,7 +30,7 @@ namespace UMSAgent.UMS
         public static string session_id = "";
         //public string msg;
         public bool readOnlineConfig = false;
-        public IsolatedStorageSettings setting = IsolatedStorageSettings.ApplicationSettings;
+        public Windows.Storage.ApplicationDataContainer setting = Windows.Storage.ApplicationData.Current.LocalSettings;
         //public string repolicy;
         public UserRepolicy userRepolicy;
         AllModel model;
@@ -74,47 +74,47 @@ namespace UMSAgent.UMS
         //user config read and save 
         private void initUserSetting()
         {
-            if (!setting.Contains("hasDateToSend"))
+            if (!setting.Values.ContainsKey("hasDateToSend"))
             {
-                setting.Add("hasDateToSend", "0");
+                setting.Values.Add("hasDateToSend", "0");
 
             }
             
-            if (!setting.Contains("repolicy"))
+            if (!setting.Values.ContainsKey("repolicy"))
             {
-                setting.Add("repolicy", userRepolicy.getRepolicy());
+                setting.Values.Add("repolicy", userRepolicy.getRepolicy());
             }
             else
             {
-                userRepolicy.setRepolicy((string)setting["repolicy"]);
+                userRepolicy.setRepolicy((string)setting.Values["repolicy"]);
             }
-            if (!setting.Contains("autolocation"))
+            if (!setting.Values.ContainsKey("autolocation"))
             {
-                setting.Add("autolocation", userRepolicy.getAutoLocation());
+                setting.Values.Add("autolocation", userRepolicy.getAutoLocation());
             }
             else
             {
-                userRepolicy.setAutoLocation((string)setting["autolocation"]);
+                userRepolicy.setAutoLocation((string)setting.Values["autolocation"]);
             }
 
-            if (!setting.Contains("sessiontime"))
+            if (!setting.Values.ContainsKey("sessiontime"))
             {
-                setting.Add("sessiontime", userRepolicy.getSessionTime());
+                setting.Values.Add("sessiontime", userRepolicy.getSessionTime());
             }
             else
             {
-                userRepolicy.setSessionTime((string)setting["sessiontime"]);
+                userRepolicy.setSessionTime((string)setting.Values["sessiontime"]);
             }
 
-            if (!setting.Contains("updateonlywifi"))
+            if (!setting.Values.ContainsKey("updateonlywifi"))
             {
-                setting.Add("updateonlywifi", userRepolicy.getUpdateOnlyWifi());
+                setting.Values.Add("updateonlywifi", userRepolicy.getUpdateOnlyWifi());
             }
             else
             {
-                userRepolicy.setUpdateOnlyWifi((string)setting["updateonlywifi"]);
+                userRepolicy.setUpdateOnlyWifi((string)setting.Values["updateonlywifi"]);
             }
-            setting.Save();
+            //setting();
         }
 
       
@@ -160,14 +160,14 @@ namespace UMSAgent.UMS
         //public void onClosing()
         //{
         //    IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
-        //    if (settings.Contains("closeTime"))
+        //    if (settings.Values.ContainsKey("closeTime"))
         //    {
-        //        settings["closeTime"] = DateTime.Now;
+        //        settings.Values["closeTime"] = DateTime.Now;
 
         //    }
         //    else
         //    {
-        //        settings.Add("closeTime",DateTime.Now);
+        //        settings.Values.Add("closeTime",DateTime.Now);
         //    }
         
         //}

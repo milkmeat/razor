@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Net;
 using UMSAgent.Common;
-using Microsoft.Phone.Info;
+//using Microsoft.Phone.Info;
 
 
 namespace UMSAgent.Model
 {
-    internal class DeviceInfo:UMSTime
+    internal class DeviceInfo//:UMSTime
     {
         public static volatile DeviceInfo deviceInfo;
         private string UMS_KEY_DEVICE_ID;
         private string UMS_KEY_OS;
         
         //
-        public DeviceInfo():base(0)
+        public DeviceInfo()//:base(0)
             
         {
             this.UMS_KEY_DEVICE_ID = "device_id";
@@ -33,12 +33,12 @@ namespace UMSAgent.Model
         public void initDeviceInfo()
         {
            
-            base.put(this.UMS_KEY_DEVICE_ID, this.getDeviceID());
+            //base.put(this.UMS_KEY_DEVICE_ID, this.getDeviceID());
            
-            base.put(this.UMS_KEY_OS, Constants.operateSystem);
-            base.put("platform", "Windows Phone");
-            base.put("appkey", "windowsphoneappkeytest");
-            base.put("resolution", "320*480");
+            //base.put(this.UMS_KEY_OS, Constants.operateSystem);
+            //base.put("platform", "Windows Phone");
+            //base.put("appkey", "windowsphoneappkeytest");
+            //base.put("resolution", "320*480");
 
         }
         //获取设备信息实例
@@ -62,18 +62,18 @@ namespace UMSAgent.Model
         //获取设备id
         private string getDeviceID()
         {
-            try
-            {
-                byte[] input = (byte[])DeviceExtendedProperties.GetValue("DeviceUniqueId");
-                if ((input != null) && (input.Length > 0))
-                {
-                    return MD5Core.GetHashString(input);
-                }
-            }
-            catch (Exception exception)
-            {
-                DebugTool.Log(exception);
-            }
+            //try
+            //{
+            //    byte[] input = (byte[])DeviceExtendedProperties.GetValue("DeviceUniqueId");
+            //    if ((input != null) && (input.Length > 0))
+            //    {
+            //        return MD5Core.GetHashString(input);
+            //    }
+            //}
+            //catch (Exception exception)
+            //{
+            //    DebugTool.Log(exception);
+            //}
             
             return "0000000000";
         }

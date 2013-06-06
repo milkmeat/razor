@@ -15,18 +15,18 @@
 using System;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
+//using System.Windows.Controls;
+//using System.Windows.Documents;
+//using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+//using System.Windows.Media;
+//using System.Windows.Media.Animation;
+//using System.Windows.Shapes;
 using UMSAgent.Common;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using System.Text;
-using Microsoft.Phone.Tasks;
+//using Microsoft.Phone.Tasks;
 using UMSAgent.MyObject;
 
 namespace UMSAgent.CallBcak
@@ -100,31 +100,31 @@ namespace UMSAgent.CallBcak
                 return;
             if (o.flag.Equals("1"))
             {
-                IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
-                if (settings.Contains("clientdata"))
+                Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                if (settings.Values.ContainsKey("clientdata"))
                 {
-                    settings.Remove("clientdata");
+                    settings.Values.Remove("clientdata");
                 }
-                if (settings.Contains("eventdata"))
+                if (settings.Values.ContainsKey("eventdata"))
                 {
-                    settings.Remove("eventdata");
+                    settings.Values.Remove("eventdata");
                 }
-                if (settings.Contains("errordata"))
+                if (settings.Values.ContainsKey("errordata"))
                 {
-                    settings.Remove("errordata");
+                    settings.Values.Remove("errordata");
                 }
-                CrashListener.SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
+                //CrashListener.SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
                 
-                if (settings.Contains("pageinfo"))
+                if (settings.Values.ContainsKey("pageinfo"))
                 {
-                    settings.Remove("pageinfo");
+                    settings.Values.Remove("pageinfo");
                 }
 
-                if (settings.Contains("hasDateToSend"))
+                if (settings.Values.ContainsKey("hasDateToSend"))
                 {
-                    settings.Remove("hasDateToSend");
+                    settings.Values.Remove("hasDateToSend");
                 }
-                settings.Save();
+                //settings.Save();
                 DebugTool.Log("delete file success!");
             }
         }
@@ -143,37 +143,37 @@ namespace UMSAgent.CallBcak
                 return;
             if (o.flag.Equals("1"))
             {
-                IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
-                if (settings.Contains("updateonlywifi"))
+                Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                if (settings.Values.ContainsKey("updateonlywifi"))
                 {
-                    settings["updateonlywifi"] = o.updateonlywifi;
+                    settings.Values["updateonlywifi"] = o.updateonlywifi;
 
                 }
                 else
                 {
-                    settings.Add("updateonlywifi", o.updateonlywifi);
+                    settings.Values.Add("updateonlywifi", o.updateonlywifi);
                 }
                
-                if (settings.Contains("repolicy"))
+                if (settings.Values.ContainsKey("repolicy"))
                 {
-                    settings["repolicy"] = o.reportpolicy;
+                    settings.Values["repolicy"] = o.reportpolicy;
                     
                 }
                 else
                 {
-                    settings.Add("repolicy", o.reportpolicy);
+                    settings.Values.Add("repolicy", o.reportpolicy);
                 }
 
-                if (settings.Contains("autolocation"))
+                if (settings.Values.ContainsKey("autolocation"))
                 {
-                    settings["autolocation"] = o.autogetlocation;
+                    settings.Values["autolocation"] = o.autogetlocation;
                     
                 }
                 else
                 {
-                    settings.Add("autolocation", o.autogetlocation);
+                    settings.Values.Add("autolocation", o.autogetlocation);
                 }
-                settings.Save();
+                //settings.Save();
                
             }
 
@@ -214,33 +214,33 @@ namespace UMSAgent.CallBcak
         {
             StringBuilder uinfo = new StringBuilder();
             uinfo.Append("Latest version:").Append(version).Append("\n").Append("Update Time:").Append(time).Append("\n").Append(description);
-            Deployment.Current.Dispatcher.BeginInvoke(delegate
-            {
+            //Windows.Management.Deployment.Current.Dispatcher.BeginInvoke(delegate
+            //{
                 
-                if (MessageBox.Show(uinfo.ToString(), "New version found", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                {
-                    downloadApp(link);
-                }
+            //    if (MessageBox.Show(uinfo.ToString(), "New version found", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            //    {
+            //        downloadApp(link);
+            //    }
                 
-            });
+            //});
            
         }
         //download app file 
         private static void downloadApp(string link)
         {
-            if (!string.IsNullOrEmpty(link))
-            {
-                try
-                {
-                    WebBrowserTask task = new WebBrowserTask();
-                    task.URL = link;
-                    task.Show();
-                }
-                catch (Exception e)
-                {
-                    DebugTool.Log("Failed to open url : " + link+e.Message);
-                }
-            }
+            //if (!string.IsNullOrEmpty(link))
+            //{
+            //    try
+            //    {
+            //        WebBrowserTask task = new WebBrowserTask();
+            //        task.URL = link;
+            //        task.Show();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        DebugTool.Log("Failed to open url : " + link+e.Message);
+            //    }
+            //}
         }
       
     }

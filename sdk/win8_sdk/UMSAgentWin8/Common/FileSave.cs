@@ -15,7 +15,7 @@
 using System;
 using System.Net;
 using UMSAgent.MyObject;
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using System.Collections.Generic;
 
 namespace UMSAgent.Common
@@ -25,44 +25,44 @@ namespace UMSAgent.Common
        
         public static void saveFile(int type, object obj)
         {
-            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
             switch (type)
             {
                 case (int)UMSApi.DataType.CLIENTDATA:// client data
                     List<ClientData> list_clientdata = new List<ClientData>();
                     ClientData c = (ClientData)obj;
 
-                    if (settings.Contains("clientdata"))
+                    if (settings.Values.ContainsKey("clientdata"))
                     {
-                        list_clientdata = (List<ClientData>)settings["clientdata"];
+                        list_clientdata = (List<ClientData>)settings.Values["clientdata"];
                         list_clientdata.Add(c);
-                        settings["clientdata"] = list_clientdata;
+                        settings.Values["clientdata"] = list_clientdata;
                     }
                     else
                     {
                         list_clientdata.Add(c);
-                        settings.Add("clientdata", list_clientdata);
+                        settings.Values.Add("clientdata", list_clientdata);
                     }
-                    settings.Save();
+                    //settings.Save();
                    // DebugTool.Log("client data list size:" + list_clientdata.Count);
                     break;
                 case (int)UMSApi.DataType.EVENTDATA://event data
                     List<Event> list_event = new List<Event>();
                     Event e = (Event)obj;
 
-                    if (settings.Contains("eventdata"))
+                    if (settings.Values.ContainsKey("eventdata"))
                     {
-                        list_event = (List<Event>)settings["eventdata"];
+                        list_event = (List<Event>)settings.Values["eventdata"];
                         list_event.Add(e);
-                        settings["eventdata"] = list_event;
+                        settings.Values["eventdata"] = list_event;
                     }
                     else
                     {
                         list_event.Add(e);
-                        settings.Add("eventdata", list_event);
+                        settings.Values.Add("eventdata", list_event);
 
                     }
-                    settings.Save();
+                    //settings.Save();
                     DebugTool.Log("event list size:" + list_event.Count);
 
                     break;
@@ -72,19 +72,19 @@ namespace UMSAgent.Common
                 case (int)UMSApi.DataType.PAGEINFODATA://page info data
                     PageInfo pageinfo = (PageInfo)obj;
                     List<PageInfo> list_pageinfo = new List<PageInfo>();
-                    if (settings.Contains("pageinfo"))
+                    if (settings.Values.ContainsKey("pageinfo"))
                     {
-                        list_pageinfo = (List<PageInfo>)settings["pageinfo"];
+                        list_pageinfo = (List<PageInfo>)settings.Values["pageinfo"];
                         list_pageinfo.Add(pageinfo);
-                        settings["pageinfo"] = list_pageinfo;
+                        settings.Values["pageinfo"] = list_pageinfo;
                     }
                     else
                     {
                         list_pageinfo.Add(pageinfo);
-                        settings.Add("pageinfo", list_pageinfo);
+                        settings.Values.Add("pageinfo", list_pageinfo);
 
                     }
-                    settings.Save();
+                    //settings.Save();
 
                     DebugTool.Log("pageinfo list size:" + list_pageinfo.Count);
                     break;
@@ -93,13 +93,13 @@ namespace UMSAgent.Common
                     break;
             }
 
-            if (settings.Contains("hasDateToSend"))
+            if (settings.Values.ContainsKey("hasDateToSend"))
             {
-                settings["hasDateToSend"] = "1";
+                settings.Values["hasDateToSend"] = "1";
             }
             else
             {
-                settings.Add("hasDateToSend", "1");
+                settings.Values.Add("hasDateToSend", "1");
             }
         
         

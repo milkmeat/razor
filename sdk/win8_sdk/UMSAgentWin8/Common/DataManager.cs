@@ -15,19 +15,20 @@
 using System;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
+//using System.Windows.Controls;
+//using System.Windows.Documents;
+//using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.IO.IsolatedStorage;
+//using System.Windows.Media;
+//using System.Windows.Media.Animation;
+//using System.Windows.Shapes;
+//using System.IO.IsolatedStorage;
 using UMSAgent.Common;
 using UMSAgent.Model;
 using UMSAgent.CallBcak;
 using UMSAgent.MyObject;
 using System.Collections.Generic;
+using Windows.UI.Xaml;
 
 
 
@@ -41,7 +42,7 @@ namespace UMSAgent.Common
         //public event DM_UpdateEventhandler DM_UpdateEvent;
         public  string appkey;
         AllModel model ;
-        private  IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+        private  Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
        
         public DataManager( string key)
         {
@@ -71,7 +72,7 @@ namespace UMSAgent.Common
         public void eventDataProceed(string eventid, string pagename, string lable = "",int acc=1)
         {
             Event obj = model.getEventInfo(eventid, pagename, lable,acc);
-            if (settings["repolicy"].Equals("1") && Utility.isNetWorkConnected())
+            if (settings.Values["repolicy"].Equals("1") && Utility.isNetWorkConnected())
             {
                 Post post = new Post((int)UMSAgent.UMSApi.DataType.EVENTDATA, obj);
                 post.stateChanged += new Post.stateChangedHandler(this.getData);
@@ -102,8 +103,8 @@ namespace UMSAgent.Common
         { 
              UpdatePreference obj = model.getUpdatePreference(version);
 
-             if ((Utility.GetNetStates() == "WiFi" && settings["updateonlywifi"].Equals("1")) ||
-                 (Utility.isNetWorkConnected() && !settings["updateonlywifi"].Equals("1")))
+             if ((Utility.GetNetStates() == "WiFi" && settings.Values["updateonlywifi"].Equals("1")) ||
+                 (Utility.isNetWorkConnected() && !settings.Values["updateonlywifi"].Equals("1")))
              {
                  Post post = new Post((int)UMSAgent.UMSApi.DataType.UPDATEDATA, obj);
                  post.stateChanged += new Post.stateChangedHandler(this.getData);
@@ -117,7 +118,7 @@ namespace UMSAgent.Common
         {
             object obj = "";
             if (Utility.isNetWorkConnected() && (
-                settings["hasDateToSend"].ToString().Equals("1")
+                settings.Values["hasDateToSend"].ToString().Equals("1")
                 ||Utility.isExistCrashLog()
                 )
                 )
@@ -129,9 +130,9 @@ namespace UMSAgent.Common
         
         }
         //save crash info when app crash
-        public void crashDataProceed(ApplicationUnhandledExceptionEventArgs ex,string flag="ums crash")
+        public void crashDataProceed(UnhandledExceptionEventArgs ex, string flag = "ums crash")
         {
-            Exception e = ex.ExceptionObject;
+            Exception e = ex.Exception;
             string err_title = e.Message == null ? "" : e.Message;
             string err_stack_trace = e.StackTrace == null ? "" : e.StackTrace;
             string error_title_statcktrace = err_title + "\r\n" + err_stack_trace;
@@ -153,7 +154,7 @@ namespace UMSAgent.Common
         public void pageInfoDataProceed(PageInfo obj)
         {
 
-            if (settings["repolicy"].Equals("1") && Utility.isNetWorkConnected())
+            if (settings.Values["repolicy"].Equals("1") && Utility.isNetWorkConnected())
             {
                 Post post = new Post((int)UMSAgent.UMSApi.DataType.PAGEINFODATA, obj);
                 post.stateChanged += new Post.stateChangedHandler(this.getData);

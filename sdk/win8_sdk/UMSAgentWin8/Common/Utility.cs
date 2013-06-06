@@ -17,19 +17,20 @@ using System.Net;
 using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
-using Microsoft.Phone.Info;
+//using Microsoft.Phone.Info;
 using System.Globalization;
 using System.Reflection;
-using Microsoft.Phone.Controls;
+//using Microsoft.Phone.Controls;
 using System.Windows;
 using System.Xml;
 using System.Net.NetworkInformation;
 using UMSAgent.Model;
-using System.IO.IsolatedStorage;
+//using System.IO.IsolatedStorage;
 using UMSAgent.MyObject;
 using UMSAgent.CallBcak;
-using System.Device.Location;
+//using System.Device.Location;
 using System.Xml.Linq;
+using Windows.UI.Xaml;
 
 
 
@@ -38,7 +39,7 @@ namespace UMSAgent.Common
     internal class Utility
     {
         public static string session_id = "";
-        public IsolatedStorageSettings setting = IsolatedStorageSettings.ApplicationSettings;
+        public Windows.Storage.ApplicationDataContainer setting = Windows.Storage.ApplicationData.Current.LocalSettings;
         //get current app version
         public static string getApplicationVersion()
         {
@@ -64,22 +65,23 @@ namespace UMSAgent.Common
         //check network type
         public static string GetNetStates()
         {
-            var info = Microsoft.Phone.Net.NetworkInformation.NetworkInterface.NetworkInterfaceType;
-            switch (info)
-            {  
-                case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.MobileBroadbandCdma:
-                    return "CDMA";
-                case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.MobileBroadbandGsm:
-                    return "CSM";
-                case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Wireless80211:
-                    return "WiFi";
-                case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Ethernet:
-                    return "Ethernet";
-                case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.None:
-                    return "None";
-                default:
-                    return "Other";
-            }
+            //var info = Microsoft.Phone.Net.NetworkInformation.NetworkInterface.NetworkInterfaceType;
+            //switch (info)
+            //{  
+            //    case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.MobileBroadbandCdma:
+            //        return "CDMA";
+            //    case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.MobileBroadbandGsm:
+            //        return "CSM";
+            //    case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Wireless80211:
+            //        return "WiFi";
+            //    case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Ethernet:
+            //        return "Ethernet";
+            //    case Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.None:
+            //        return "None";
+            //    default:
+            //        return "Other";
+            //}
+            return "";
         }
         
         //get device id
@@ -88,7 +90,7 @@ namespace UMSAgent.Common
             string strDeviceUniqueID = "";
             try
             {
-                byte[] byteArray = DeviceExtendedProperties.GetValue("DeviceUniqueId") as byte[];
+                byte[] byteArray = { };// DeviceExtendedProperties.GetValue("DeviceUniqueId") as byte[];
                 string strTemp = "";
 
                 foreach (byte b in byteArray)
@@ -116,22 +118,22 @@ namespace UMSAgent.Common
         public static double[] GetLocationProperty()
         {
             double[] latLong = new double[2];
-            try
-            {
-                GeoCoordinateWatcher watcher = new GeoCoordinateWatcher();
-                watcher.TryStart(false, TimeSpan.FromMilliseconds(1000));
-                GeoCoordinate coord = watcher.Position.Location;
+            //try
+            //{
+            //    GeoCoordinateWatcher watcher = new GeoCoordinateWatcher();
+            //    watcher.TryStart(false, TimeSpan.FromMilliseconds(1000));
+            //    GeoCoordinate coord = watcher.Position.Location;
 
-                if (coord.IsUnknown != true)
-                {
-                    latLong[0] = coord.Latitude;
-                    latLong[1] = coord.Longitude;
-                }
-            }
-            catch (Exception e)
-            {
-                DebugTool.Log(e);
-            }
+            //    if (coord.IsUnknown != true)
+            //    {
+            //        latLong[0] = coord.Latitude;
+            //        latLong[1] = coord.Longitude;
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    DebugTool.Log(e);
+            //}
             
             return latLong;
         }
@@ -151,13 +153,13 @@ namespace UMSAgent.Common
            // var currentPage = ((App)Application.Current).RootFrame.Content as PhoneApplicationPage;
 
             string name = "";
-            var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var customAttributes = executingAssembly.GetCustomAttributes(typeof(System.Reflection.AssemblyTitleAttribute), false);
-            if (customAttributes != null)
-            {
-                var assemblyName = customAttributes[0] as System.Reflection.AssemblyTitleAttribute;
-                name = assemblyName.Title;
-            }
+            //var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+            //var customAttributes = executingAssembly.GetCustomAttributes(typeof(System.Reflection.AssemblyTitleAttribute), false);
+            //if (customAttributes != null)
+            //{
+            //    var assemblyName = customAttributes[0] as System.Reflection.AssemblyTitleAttribute;
+            //    name = assemblyName.Title;
+            //}
             return name;
 
         }
@@ -168,15 +170,16 @@ namespace UMSAgent.Common
             //OperatingSystem os = Environment.OSVersion;
             //return  os.Platform + os.Version.ToString();
             string version = "";
-            try
-            {
-                version = System.Environment.OSVersion.Version.ToString();
-            }
-            catch(Exception e)
-            {
-                DebugTool.Log(e);
-            }
-            return "windows phone " +version;
+            //try
+            //{
+            //    version = System.Environment.OSVersion.Version.ToString();
+            //}
+            //catch(Exception e)
+            //{
+            //    DebugTool.Log(e);
+            //}
+            //return "windows phone " +version;
+            return version;
         }
 
         //get device resolution
@@ -184,8 +187,11 @@ namespace UMSAgent.Common
         {
             try
             {
-                double w = System.Windows.Application.Current.Host.Content.ActualWidth;
-                double h = System.Windows.Application.Current.Host.Content.ActualHeight;
+                var bounds = Window.Current.Bounds;
+
+                double w = bounds.Height;
+                double h = bounds.Width;
+
                 return w.ToString() + "*" + h.ToString();
             }
             catch (Exception e)
@@ -198,14 +204,14 @@ namespace UMSAgent.Common
         public static string getDeviceName()
         {
             string devicename = "";
-            try
-            {
-                devicename = DeviceExtendedProperties.GetValue("DeviceName").ToString();
-            }
-            catch(Exception e)
-            {
-                DebugTool.Log(e);
-            }
+            //try
+            //{
+            //    devicename = DeviceExtendedProperties.GetValue("DeviceName").ToString();
+            //}
+            //catch(Exception e)
+            //{
+            //    DebugTool.Log(e);
+            //}
             return devicename;
         }
 

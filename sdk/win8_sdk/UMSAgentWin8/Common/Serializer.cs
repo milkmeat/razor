@@ -34,7 +34,7 @@ namespace UMSAgent.Common
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ErrorInfo));
             ser.WriteObject(ms, obj);
             byte[] json = ms.ToArray();
-            ms.Close();
+            ms.Flush();
             return Encoding.UTF8.GetString(json, 0, json.Length);
         }
 
@@ -49,7 +49,7 @@ namespace UMSAgent.Common
             MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(json));
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ErrorInfo));
             ErrorInfo obj = (ErrorInfo)ser.ReadObject(ms);
-            ms.Close();
+            ms.Flush();
             return obj;
         }
     }

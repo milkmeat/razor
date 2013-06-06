@@ -54,8 +54,8 @@ namespace UMSAgent.Common
             {
                 try
                 {
-                   // Debug.WriteLine("debug---"+info);
-                   typeof(Debug).GetMethod("WriteLine", new Type[] { typeof(string) }).Invoke(null, new object[] { string.Format("debug--->{0}", info) });
+                   Debug.WriteLine("debug---"+info);
+                   //typeof(Debug).GetMethod("WriteLine", new Type[] { typeof(string) }).Invoke(null, new object[] { string.Format("debug--->{0}", info) });
                 }
                 catch (Exception)
                 {
