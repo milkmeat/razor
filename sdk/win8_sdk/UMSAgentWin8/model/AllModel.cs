@@ -30,6 +30,7 @@ using System.Globalization;
 using UMSAgent.MyObject;
 //using System.IO.IsolatedStorage;
 using UMSAgent.UMS;
+using UMSAgentWin8.Common;
 
 
 namespace UMSAgent.Model
@@ -87,12 +88,12 @@ namespace UMSAgent.Model
             clientdata.language =WebUtility.UrlEncode( CultureInfo.CurrentCulture.DisplayName);
             clientdata.resolution = UMSApi.device_resolution;
             clientdata.deviceid = Utility.getDeviceId();
-            clientdata.devicename = "";// DeviceExtendedProperties.GetValue("DeviceName").ToString();
+            clientdata.devicename = Utility.getDeviceName();// DeviceExtendedProperties.GetValue("DeviceName").ToString();
             clientdata.version = Utility.getApplicationVersion();
             clientdata.appkey = key;
             clientdata.time = Utility.getTime();
             Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (settings.Values["autolocation"].ToString().Equals("1"))
+            if ("1".Equals(ApplicationSettings.GetSetting<string>("autolocation")))
             {
                 double[] location = Utility.GetLocationProperty();
                 if (location.Length == 2)

@@ -87,13 +87,13 @@ namespace UMSAgent.Common
             //    default:
             //        return "Other";
             //}
-            return "";
+            return "Ethernet";
         }
         
         //get device id
         public static string getDeviceId()
         {
-            string strDeviceUniqueID = "";
+            string strDeviceUniqueID = "012345";
             try
             {
                 byte[] byteArray = { };// DeviceExtendedProperties.GetValue("DeviceUniqueId") as byte[];
@@ -158,7 +158,7 @@ namespace UMSAgent.Common
         {
            // var currentPage = ((App)Application.Current).RootFrame.Content as PhoneApplicationPage;
 
-            string name = "";
+            string name = "page1";
             //var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             //var customAttributes = executingAssembly.GetCustomAttributes(typeof(System.Reflection.AssemblyTitleAttribute), false);
             //if (customAttributes != null)
@@ -175,7 +175,7 @@ namespace UMSAgent.Common
         {
             //OperatingSystem os = Environment.OSVersion;
             //return  os.Platform + os.Version.ToString();
-            string version = "";
+            string version = "win8";
             //try
             //{
             //    version = System.Environment.OSVersion.Version.ToString();
@@ -209,7 +209,7 @@ namespace UMSAgent.Common
         //get device name
         public static string getDeviceName()
         {
-            string devicename = "";
+            string devicename = "devicename1";
             //try
             //{
             //    devicename = DeviceExtendedProperties.GetValue("DeviceName").ToString();

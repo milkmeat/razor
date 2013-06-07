@@ -44,7 +44,7 @@ namespace UMSTestWin8
             Frame rootFrame = Window.Current.Content as Frame;
 
             UMSAgent.UMSApi.setDebugMode(true);
-            UMSAgent.UMSApi.onAppStart("14aaa92e098df46cb53ed5196e0c331c", "http://demo.cobub.com/razor/index.php");
+            UMSAgent.UMSApi.onAppStart("c4aa238032320559d4de5dc5ebfdbd8c", "http://razortest/razor/index.php");
             //UMSAgent.UMSApi.updateOnlineConfig();
             //UMSAgent.UMSApi.getNewVersion();
 

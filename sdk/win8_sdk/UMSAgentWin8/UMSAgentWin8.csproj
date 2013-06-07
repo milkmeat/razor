@@ -118,7 +118,6 @@
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Common\Xml.cs" />
     <Compile Include="model\AllModel.cs" />
-    <Compile Include="model\DeviceInfo.cs" />
     <Compile Include="model\Session.cs" />
     <Compile Include="MyObject\AllInfo.cs" />
     <Compile Include="MyObject\ClientData.cs" />
