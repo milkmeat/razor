@@ -34,5 +34,10 @@ namespace UMSTestWin8
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
         }
+
+        private void xTestButton_Click(object sender, RoutedEventArgs e)
+        {
+            UMSAgent.UMSApi.onEvent("mycontact", "中文测试");
+        }
     }
 }

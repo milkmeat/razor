@@ -31,6 +31,7 @@ using UMSAgent.CallBcak;
 //using System.Device.Location;
 using System.Xml.Linq;
 using Windows.UI.Xaml;
+using Windows.ApplicationModel;
 
 
 
@@ -43,17 +44,22 @@ namespace UMSAgent.Common
         //get current app version
         public static string getApplicationVersion()
         {
-            string version = "";
+            string versionStr = "";
             try
             {
-                version = XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value;
+                Package package = Package.Current;
+                PackageId packageId = package.Id;
+                PackageVersion version = packageId.Version;
+
+                versionStr = string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+                //version = XDocument.Load("WMAppManifest.xml").Root.Element("App").Attribute("Version").Value;
             }
             catch (Exception e)
             {
                 DebugTool.Log(e);
             }
-             
-            return version;
+
+            return versionStr;
         }
 
         //check network is connected
@@ -189,8 +195,8 @@ namespace UMSAgent.Common
             {
                 var bounds = Window.Current.Bounds;
 
-                double w = bounds.Height;
-                double h = bounds.Width;
+                double h = bounds.Height;
+                double w = bounds.Width;
 
                 return w.ToString() + "*" + h.ToString();
             }

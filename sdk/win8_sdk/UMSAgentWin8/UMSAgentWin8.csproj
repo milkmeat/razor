@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE WINRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -103,16 +103,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallBack\AsyncCallBackPro.cs" />
+    <Compile Include="Common\ApplicationSettings.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\CrashListener.cs" />
+    <Compile Include="Common\DataContractSerialization.cs" />
     <Compile Include="Common\DataManager.cs" />
     <Compile Include="Common\DebugTool.cs" />
     <Compile Include="Common\FileSave.cs" />
     <Compile Include="Common\Obj2Json.cs" />
     <Compile Include="Common\Post.cs" />
     <Compile Include="Common\Serializer.cs" />
+    <Compile Include="Common\SettingKeys.cs" />
     <Compile Include="Common\UmsJson.cs" />
     <Compile Include="Common\Utility.cs" />
+    <Compile Include="Common\Xml.cs" />
     <Compile Include="model\AllModel.cs" />
     <Compile Include="model\DeviceInfo.cs" />
     <Compile Include="model\Session.cs" />

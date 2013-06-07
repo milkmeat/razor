@@ -27,6 +27,7 @@ using UMSAgent.MyObject;
 using System.Collections.Generic;
 using System.Text;
 using UMSAgent.UMS;
+using UMSAgentWin8.Common;
 //using System.Runtime.Serialization.Json;
 
 
@@ -131,21 +132,10 @@ namespace UMSAgent.Common
             string ret = "";
             Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-           
-            if (settings.Values.ContainsKey("clientdata"))
-            {
-                List<ClientData> list_client_data = (List<ClientData>)settings.Values["clientdata"];
-                allinfo.clientData = list_client_data;
-            }
+            allinfo.clientData = ApplicationSettings.GetSetting<List<ClientData>>(SettingKeys.CLIENT_DATA, null);
+            allinfo.eventInfo = ApplicationSettings.GetSetting<List<Event>>(SettingKeys.EVENT_DATA, null);
+            allinfo.activityInfo = ApplicationSettings.GetSetting<List<PageInfo>>(SettingKeys.PAGE_INFO, null);
 
-            
-            if (settings.Values.ContainsKey("eventdata"))
-            {
-                List<Event> list_event_data = (List<Event>)settings.Values["eventdata"];
-                allinfo.eventInfo = list_event_data;
-            }
-
-            
             try
             {
                 string err_str = CrashListener.CheckForPreviousException();
@@ -161,14 +151,7 @@ namespace UMSAgent.Common
             {
                 DebugTool.Log(e.Message);
             }
-           
-           
-            if (settings.Values.ContainsKey("pageinfo"))
-            {
-                List<PageInfo> list_pageinfo_data = (List<PageInfo>)settings.Values["pageinfo"];
-               
-                allinfo.activityInfo = list_pageinfo_data;
-            }
+
             ret = UmsJson.Serialize(allinfo);
             return ret;
         }

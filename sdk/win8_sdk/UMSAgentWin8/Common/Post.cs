@@ -20,6 +20,9 @@ using System.IO;
 using UMSAgent.Common;
 using UMSAgent.CallBcak;
 using UMSAgent.MyObject;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Diagnostics;
 
 namespace UMSAgent.Common
 {
@@ -50,17 +53,41 @@ namespace UMSAgent.Common
            
         }
         
-        public  void sendData(string url)
+        public  async void sendData(string url)
         {
             /*
             var request = HttpWebRequest.Create(url);
             var result = (IAsyncResult)request.BeginGetResponse(ResponseCallback, request);
              */
-            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
-            myRequest.Method = "POST";
-            myRequest.ContentType = "application/x-www-form-urlencoded";
-            myRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), myRequest);
-            
+            //HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+            //myRequest.Method = "POST";
+            //myRequest.ContentType = "application/x-www-form-urlencoded";
+            //myRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), myRequest);
+
+            HttpClient client = new HttpClient();
+
+            HttpContent httpContent = new StringContent("content="+this.message);//TODO convert to UTF8
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+            HttpResponseMessage response = await client.PostAsync(url, httpContent);
+            DebugTool.Log("post response:" + response);
+
+            if (response == null || response.StatusCode != HttpStatusCode.OK)
+            {
+                CommonRet errorRet = new CommonRet();
+                errorRet.flag = "-100";
+                errorRet.msg = "server error ";
+                if (response != null) { errorRet.msg += response.StatusCode; }
+                ret = UmsJson.Serialize(errorRet);
+                DebugTool.Log(ret);
+                stateChanged(type, ret, obj);
+            }
+            else
+            {
+                ret = await response.Content.ReadAsStringAsync();
+
+                stateChanged(type, ret, obj);
+            }
         }
        
 

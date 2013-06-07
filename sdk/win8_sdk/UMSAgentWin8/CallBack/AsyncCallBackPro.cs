@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Text;
 //using Microsoft.Phone.Tasks;
 using UMSAgent.MyObject;
+using UMSAgentWin8.Common;
 
 namespace UMSAgent.CallBcak
 {
@@ -101,30 +102,15 @@ namespace UMSAgent.CallBcak
             if (o.flag.Equals("1"))
             {
                 Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                if (settings.Values.ContainsKey("clientdata"))
-                {
-                    settings.Values.Remove("clientdata");
-                }
-                if (settings.Values.ContainsKey("eventdata"))
-                {
-                    settings.Values.Remove("eventdata");
-                }
-                if (settings.Values.ContainsKey("errordata"))
-                {
-                    settings.Values.Remove("errordata");
-                }
+
+                ApplicationSettings.RemoveSetting(SettingKeys.CLIENT_DATA);
+                ApplicationSettings.RemoveSetting(SettingKeys.EVENT_DATA);
+                ApplicationSettings.RemoveSetting(SettingKeys.ERROR_DATA);
+                ApplicationSettings.RemoveSetting(SettingKeys.PAGE_INFO);
+                ApplicationSettings.RemoveSetting(SettingKeys.HAS_DATA_TO_SEND);
+
                 //CrashListener.SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
                 
-                if (settings.Values.ContainsKey("pageinfo"))
-                {
-                    settings.Values.Remove("pageinfo");
-                }
-
-                if (settings.Values.ContainsKey("hasDateToSend"))
-                {
-                    settings.Values.Remove("hasDateToSend");
-                }
-                //settings.Save();
                 DebugTool.Log("delete file success!");
             }
         }
@@ -144,37 +130,11 @@ namespace UMSAgent.CallBcak
             if (o.flag.Equals("1"))
             {
                 Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                if (settings.Values.ContainsKey("updateonlywifi"))
-                {
-                    settings.Values["updateonlywifi"] = o.updateonlywifi;
-
-                }
-                else
-                {
-                    settings.Values.Add("updateonlywifi", o.updateonlywifi);
-                }
-               
-                if (settings.Values.ContainsKey("repolicy"))
-                {
-                    settings.Values["repolicy"] = o.reportpolicy;
-                    
-                }
-                else
-                {
-                    settings.Values.Add("repolicy", o.reportpolicy);
-                }
-
-                if (settings.Values.ContainsKey("autolocation"))
-                {
-                    settings.Values["autolocation"] = o.autogetlocation;
-                    
-                }
-                else
-                {
-                    settings.Values.Add("autolocation", o.autogetlocation);
-                }
-                //settings.Save();
-               
+                ApplicationSettings.SetSetting<string>(SettingKeys.UPDATE_ONLY_WIFI, o.updateonlywifi);
+                ApplicationSettings.SetSetting<string>(SettingKeys.REPORT_POLICY, o.reportpolicy);
+                ApplicationSettings.SetSetting<string>(SettingKeys.AUTO_LOCATION, o.autogetlocation);
+                ApplicationSettings.SetSetting<string>(SettingKeys.UPDATE_ONLY_WIFI, o.updateonlywifi);
+              
             }
 
             DebugTool.Log("call back of onlineconfig data------" + msg);

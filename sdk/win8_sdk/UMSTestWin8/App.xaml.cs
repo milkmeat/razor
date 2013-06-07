@@ -43,6 +43,11 @@ namespace UMSTestWin8
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
+            UMSAgent.UMSApi.setDebugMode(true);
+            UMSAgent.UMSApi.onAppStart("14aaa92e098df46cb53ed5196e0c331c", "http://demo.cobub.com/razor/index.php");
+            //UMSAgent.UMSApi.updateOnlineConfig();
+            //UMSAgent.UMSApi.getNewVersion();
+
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)

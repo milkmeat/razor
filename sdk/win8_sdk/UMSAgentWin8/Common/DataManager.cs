@@ -29,6 +29,7 @@ using UMSAgent.CallBcak;
 using UMSAgent.MyObject;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
+using UMSAgentWin8.Common;
 
 
 
@@ -72,7 +73,7 @@ namespace UMSAgent.Common
         public void eventDataProceed(string eventid, string pagename, string lable = "",int acc=1)
         {
             Event obj = model.getEventInfo(eventid, pagename, lable,acc);
-            if (settings.Values["repolicy"].Equals("1") && Utility.isNetWorkConnected())
+            if (ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY).Equals("1") && Utility.isNetWorkConnected())
             {
                 Post post = new Post((int)UMSAgent.UMSApi.DataType.EVENTDATA, obj);
                 post.stateChanged += new Post.stateChangedHandler(this.getData);
@@ -118,7 +119,7 @@ namespace UMSAgent.Common
         {
             object obj = "";
             if (Utility.isNetWorkConnected() && (
-                settings.Values["hasDateToSend"].ToString().Equals("1")
+                ApplicationSettings.GetSetting<string>(SettingKeys.HAS_DATA_TO_SEND)=="1"
                 ||Utility.isExistCrashLog()
                 )
                 )
@@ -154,7 +155,7 @@ namespace UMSAgent.Common
         public void pageInfoDataProceed(PageInfo obj)
         {
 
-            if (settings.Values["repolicy"].Equals("1") && Utility.isNetWorkConnected())
+            if (ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY).Equals("1") && Utility.isNetWorkConnected())
             {
                 Post post = new Post((int)UMSAgent.UMSApi.DataType.PAGEINFODATA, obj);
                 post.stateChanged += new Post.stateChangedHandler(this.getData);

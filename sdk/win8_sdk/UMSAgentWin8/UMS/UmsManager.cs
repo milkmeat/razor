@@ -20,6 +20,7 @@ using UMSAgent.Common;
 
 //using System.IO.IsolatedStorage;
 using UMSAgent.Model;
+using UMSAgentWin8.Common;
 
 namespace UMSAgent.UMS
 {
@@ -74,47 +75,17 @@ namespace UMSAgent.UMS
         //user config read and save 
         private void initUserSetting()
         {
-            if (!setting.Values.ContainsKey("hasDateToSend"))
-            {
-                setting.Values.Add("hasDateToSend", "0");
+            userRepolicy.setRepolicy(ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY,
+                userRepolicy.getRepolicy()));
 
-            }
-            
-            if (!setting.Values.ContainsKey("repolicy"))
-            {
-                setting.Values.Add("repolicy", userRepolicy.getRepolicy());
-            }
-            else
-            {
-                userRepolicy.setRepolicy((string)setting.Values["repolicy"]);
-            }
-            if (!setting.Values.ContainsKey("autolocation"))
-            {
-                setting.Values.Add("autolocation", userRepolicy.getAutoLocation());
-            }
-            else
-            {
-                userRepolicy.setAutoLocation((string)setting.Values["autolocation"]);
-            }
+            userRepolicy.setAutoLocation(ApplicationSettings.GetSetting<string>(SettingKeys.AUTO_LOCATION,
+                userRepolicy.getAutoLocation()));
 
-            if (!setting.Values.ContainsKey("sessiontime"))
-            {
-                setting.Values.Add("sessiontime", userRepolicy.getSessionTime());
-            }
-            else
-            {
-                userRepolicy.setSessionTime((string)setting.Values["sessiontime"]);
-            }
+            userRepolicy.setSessionTime(ApplicationSettings.GetSetting<string>(SettingKeys.SESSION_TIME,
+                userRepolicy.getSessionTime()));
 
-            if (!setting.Values.ContainsKey("updateonlywifi"))
-            {
-                setting.Values.Add("updateonlywifi", userRepolicy.getUpdateOnlyWifi());
-            }
-            else
-            {
-                userRepolicy.setUpdateOnlyWifi((string)setting.Values["updateonlywifi"]);
-            }
-            //setting();
+            userRepolicy.setUpdateOnlyWifi(ApplicationSettings.GetSetting<string>(SettingKeys.UPDATE_ONLY_WIFI,
+                userRepolicy.getUpdateOnlyWifi()));
         }
 
       
