@@ -110,6 +110,7 @@
     <Compile Include="Common\DataManager.cs" />
     <Compile Include="Common\DebugTool.cs" />
     <Compile Include="Common\FileSave.cs" />
+    <Compile Include="Common\GZipHttpClient.cs" />
     <Compile Include="Common\Obj2Json.cs" />
     <Compile Include="Common\Post.cs" />
     <Compile Include="Common\Serializer.cs" />

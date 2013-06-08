@@ -23,6 +23,7 @@ using UMSAgent.MyObject;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Diagnostics;
+using UMSAgentWin8.Common;
 
 namespace UMSAgent.Common
 {
@@ -64,7 +65,7 @@ namespace UMSAgent.Common
             //myRequest.ContentType = "application/x-www-form-urlencoded";
             //myRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), myRequest);
 
-            HttpClient client = new HttpClient();
+            HttpClient client = new GZipHttpClient();
 
             HttpContent httpContent = new StringContent("content="+this.message);//TODO convert to UTF8
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
