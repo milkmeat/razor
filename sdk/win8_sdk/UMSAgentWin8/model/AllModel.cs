@@ -83,7 +83,7 @@ namespace UMSAgent.Model
         public ClientData getClientData()
         {
             ClientData clientdata = new ClientData();
-            clientdata.platform = "windows phone";
+            clientdata.platform = "windows 8";
             clientdata.os_version = Utility.getOsVersion();
             clientdata.language =WebUtility.UrlEncode( CultureInfo.CurrentCulture.DisplayName);
             clientdata.resolution = UMSApi.device_resolution;

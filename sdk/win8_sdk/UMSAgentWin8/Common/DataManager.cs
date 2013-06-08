@@ -73,7 +73,7 @@ namespace UMSAgent.Common
         public void eventDataProceed(string eventid, string pagename, string lable = "",int acc=1)
         {
             Event obj = model.getEventInfo(eventid, pagename, lable,acc);
-            if (ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY).Equals("1") && Utility.isNetWorkConnected())
+            if ("1".Equals(ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY)) && Utility.isNetWorkConnected())
             {
                 Post post = new Post((int)UMSAgent.UMSApi.DataType.EVENTDATA, obj);
                 post.stateChanged += new Post.stateChangedHandler(this.getData);
@@ -104,8 +104,8 @@ namespace UMSAgent.Common
         { 
              UpdatePreference obj = model.getUpdatePreference(version);
 
-             if ((Utility.GetNetStates() == "WiFi" && settings.Values["updateonlywifi"].Equals("1")) ||
-                 (Utility.isNetWorkConnected() && !settings.Values["updateonlywifi"].Equals("1")))
+             if ((Utility.GetNetStates() == "WiFi" && "1".Equals(ApplicationSettings.GetSetting<string>("updateonlywifi"))) ||
+                 (Utility.isNetWorkConnected() && !"1".Equals(ApplicationSettings.GetSetting<string>("updateonlywifi"))))
              {
                  Post post = new Post((int)UMSAgent.UMSApi.DataType.UPDATEDATA, obj);
                  post.stateChanged += new Post.stateChangedHandler(this.getData);
@@ -119,7 +119,7 @@ namespace UMSAgent.Common
         {
             object obj = "";
             if (Utility.isNetWorkConnected() && (
-                ApplicationSettings.GetSetting<string>(SettingKeys.HAS_DATA_TO_SEND)=="1"
+                "1".Equals(ApplicationSettings.GetSetting<string>(SettingKeys.HAS_DATA_TO_SEND))
                 ||Utility.isExistCrashLog()
                 )
                 )
@@ -134,9 +134,15 @@ namespace UMSAgent.Common
         public void crashDataProceed(UnhandledExceptionEventArgs ex, string flag = "ums crash")
         {
             Exception e = ex.Exception;
-            string err_title = e.Message == null ? "" : e.Message;
+            string err_title = ""+ex.Message+ e.Message;
             string err_stack_trace = e.StackTrace == null ? "" : e.StackTrace;
             string error_title_statcktrace = err_title + "\r\n" + err_stack_trace;
+
+            while (e.InnerException != null)
+            {
+                e = e.InnerException;
+                error_title_statcktrace += "\r\n" + e.StackTrace;
+            }
 
             ErrorInfo error = new ErrorInfo();
 
@@ -155,7 +161,7 @@ namespace UMSAgent.Common
         public void pageInfoDataProceed(PageInfo obj)
         {
 
-            if (ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY).Equals("1") && Utility.isNetWorkConnected())
+            if (ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY)=="1" && Utility.isNetWorkConnected())
             {
                 Post post = new Post((int)UMSAgent.UMSApi.DataType.PAGEINFODATA, obj);
                 post.stateChanged += new Post.stateChangedHandler(this.getData);

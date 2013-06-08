@@ -20,156 +20,61 @@ using UMSAgent.MyObject;
 using System.Collections.Generic;
 //using Microsoft.Phone.Info;
 using UMSAgent.UMS;
+using UMSAgentWin8.Common;
 namespace UMSAgent.Common
 {
     public class CrashListener
     {
 
-        const string filename = "ums_error_log.txt";
+        //const string filename = "ums_error_log.txt";
+        const string LAST_ERROR_LOG = "LAST_ERROR_LOG";
 
-        //internal static void ReportException(Exception ex, string extra)
-        //{
+        internal static void ReportException(Exception ex, string extra)
+        {
 
-        //    try
-        //    {
-        //        using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-        //        {
-        //            SafeDeleteFile(store);
+            try
+            {
+                ErrorInfo error = new ErrorInfo();
 
-        //            using (TextWriter output = new StreamWriter(store.CreateFile(filename)))
-        //            {
-        //                ErrorInfo error = new ErrorInfo();
-                        
-        //                error.appkey = UmsManager.appkey;
-        //                //error.stacktrace = ex.Message+"\r\n"+ex.StackTrace;
-        //                error.stacktrace = ex.StackTrace == null ? "" : ex.StackTrace;
-        //                error.time = Utility.getTime();
-                        
-        //                error.version = Utility.getApplicationVersion();
-        //                error.activity = Utility.getCurrentPageName();
-        //                error.deviceid = Utility.getDeviceName();
-        //                error.os_version = Utility.getOsVersion();
-                        
-        //                string str =UmsJson.Serialize(error);
-        //                output.WriteLine(str);
-        //            }
+                error.appkey = UmsManager.appkey;
+                //error.stacktrace = ex.Message+"\r\n"+ex.StackTrace;
+                error.stacktrace = ex.StackTrace == null ? "" : ex.StackTrace;
+                error.time = Utility.getTime();
 
-        //        }
+                error.version = Utility.getApplicationVersion();
+                error.activity = Utility.getCurrentPageName();
+                error.deviceid = Utility.getDeviceName();
+                error.os_version = Utility.getOsVersion();
 
-        //    }
+                string str = UmsJson.Serialize(error);
 
-        //    catch (Exception)
-        //    {
-
-        //    }
-
-        //}
+                ApplicationSettings.SetSetting<string>(LAST_ERROR_LOG, str);
+            }
+            catch (Exception)
+            { }
+        }
 
         internal static void ReportException(String error, string extra)
         {
-
-            //try
-            //{
-
-            //    using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-            //    {
-
-            //        SafeDeleteFile(store);
-
-            //        using (TextWriter output = new StreamWriter(store.CreateFile(filename)))
-            //        {
-            //            output.WriteLine(error);
-            //        }
-
-            //    }
-
-            //}
-
-            //catch (Exception)
-            //{
-
-            //}
-
+            ApplicationSettings.SetSetting<string>(LAST_ERROR_LOG, error);
         }
 
 
 
         internal static string CheckForPreviousException()
         {
-            //string contents = null;
-            //try
-            //{
-                
+            string contents = ApplicationSettings.GetSetting<string>(LAST_ERROR_LOG, null);
 
-            //    using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-            //    {
-
-            //        if (store.FileExists(filename))
-            //        {
-
-            //            using (TextReader reader = new StreamReader(store.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.None)))
-            //            {
-
-            //                contents = reader.ReadToEnd();
-
-            //            }
-
-            //           // SafeDeleteFile(store);
-
-            //        }
-
-            //    }
-
-            //    if (contents != null)
-            //    {
-
-            //        //handle crash msg
-                    
-            //    }
-
-            //}
-
-            //catch (Exception)
-            //{
-
-            //}
-
-            //finally
-            //{
-
-            //   // SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
-
-            //}
-            //return contents;
-            return "";
-
+            return contents;
         }
 
 
 
-        //public static void SafeDeleteFile(IsolatedStorageFile store)
-        //{
-
-        //    //try
-        //    //{
-
-        //    //    store.DeleteFile(filename);
-
-        //    //    Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
-        //    //    if (settings.Values.ContainsKey("errordata"))
-        //    //    {
-        //    //        settings.Values.Remove("erroedata");
-        //    //    }
-
-        //    //}
-
-        //    //catch (Exception)
-        //    //{
-
-        //    //}
-
-        //}
-
+        internal static void RemoveErrorLog()
+        {
+            ApplicationSettings.RemoveSetting(SettingKeys.ERROR_DATA);
+            ApplicationSettings.RemoveSetting(LAST_ERROR_LOG);
+        }
     }
 
 }

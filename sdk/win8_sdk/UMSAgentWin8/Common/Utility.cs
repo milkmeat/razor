@@ -32,7 +32,10 @@ using UMSAgent.CallBcak;
 using System.Xml.Linq;
 using Windows.UI.Xaml;
 using Windows.ApplicationModel;
-
+using UMSAgentWin8.Common;
+using Windows.System.Profile;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.IO;
 
 
 namespace UMSAgent.Common
@@ -87,39 +90,37 @@ namespace UMSAgent.Common
             //    default:
             //        return "Other";
             //}
+
+            //win8 do not have such function
             return "Ethernet";
         }
         
         //get device id
         public static string getDeviceId()
         {
-            string strDeviceUniqueID = "012345";
-            try
-            {
-                byte[] byteArray = { };// DeviceExtendedProperties.GetValue("DeviceUniqueId") as byte[];
-                string strTemp = "";
+            string APP_UNIQ_ID = "APP_UNIQ_ID";
 
-                foreach (byte b in byteArray)
+            if (ApplicationSettings.HasSetting<string>(APP_UNIQ_ID))
+            {
+                return ApplicationSettings.GetSetting<string>(APP_UNIQ_ID);
+            }
+            else
+            {
+                string tokenStr;
+                var token = HardwareIdentification.GetPackageSpecificToken(null);
+                var stream = token.Id.AsStream();
+                using (var reader = new BinaryReader(stream))
                 {
-                    strTemp = b.ToString();
-                    if (1 == strTemp.Length)
-                    {
-                        strTemp = "00" + strTemp;
-                    }
-                    else if (2 == strTemp.Length)
-                    {
-                        strTemp = "0" + strTemp;
-                    }
-                    strDeviceUniqueID += strTemp;
+                    var bytes = reader.ReadBytes((int)stream.Length);
+                    tokenStr = BitConverter.ToString(bytes);
                 }
 
+                ApplicationSettings.SetSetting<string>(APP_UNIQ_ID, tokenStr);
+
+                return tokenStr;
             }
-            catch (Exception e)
-            {
-                DebugTool.Log(e);
-            }
-            return strDeviceUniqueID;
         }
+
         //get lati and longi
         public static double[] GetLocationProperty()
         {
@@ -140,6 +141,9 @@ namespace UMSAgent.Common
             //{
             //    DebugTool.Log(e);
             //}
+
+            //win8 support location in http://msdn.microsoft.com/en-us/library/windows/apps/Hh465129
+            //but I don't want to enable it from the manifest, maybe using the ip address is good enough
             
             return latLong;
         }
@@ -149,16 +153,15 @@ namespace UMSAgent.Common
         //get current time
         public static string getTime()
         {
-            
             return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         // get page name
         public static string getCurrentPageName()
         {
-           // var currentPage = ((App)Application.Current).RootFrame.Content as PhoneApplicationPage;
+           //var currentPage = (Application.Current.).RootFrame.Content as PhoneApplicationPage;
 
-            string name = "page1";
+            string name = "N/A";
             //var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             //var customAttributes = executingAssembly.GetCustomAttributes(typeof(System.Reflection.AssemblyTitleAttribute), false);
             //if (customAttributes != null)
@@ -209,7 +212,7 @@ namespace UMSAgent.Common
         //get device name
         public static string getDeviceName()
         {
-            string devicename = "devicename1";
+            string devicename = "N/A";
             //try
             //{
             //    devicename = DeviceExtendedProperties.GetValue("DeviceName").ToString();

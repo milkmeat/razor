@@ -16,6 +16,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace UMSTestWin8
 {
+    class MyException : Exception
+    { 
+        public MyException():base(){}
+        public MyException(string message) : base(message) { }
+    }
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -38,6 +43,11 @@ namespace UMSTestWin8
         private void xTestButton_Click(object sender, RoutedEventArgs e)
         {
             UMSAgent.UMSApi.onEvent("mycontact", "中文测试");
+        }
+
+        private void xExceptionButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new MyException("exception test");
         }
     }
 }

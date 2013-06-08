@@ -22,7 +22,7 @@ namespace UMSAgent.Common
     {
         internal static bool isDebugMode = false;
         internal static TimeSpan sessionTime = new TimeSpan(0, 0, 30);
-        internal static string operateSystem = "Windows Phone";
+        //internal static string operateSystem = "Windows Phone";
         public static string BASEURL = "";
         internal static string postClientDataUrl = "?/ums/postClientData";
         internal static string checkNewVersionUrl = "?/ums/getApplicationUpdate";

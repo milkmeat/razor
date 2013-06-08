@@ -109,7 +109,7 @@ namespace UMSAgent.CallBcak
                 ApplicationSettings.RemoveSetting(SettingKeys.PAGE_INFO);
                 ApplicationSettings.RemoveSetting(SettingKeys.HAS_DATA_TO_SEND);
 
-                //CrashListener.SafeDeleteFile(IsolatedStorageFile.GetUserStoreForApplication());
+                CrashListener.RemoveErrorLog();
                 
                 DebugTool.Log("delete file success!");
             }
