@@ -85,7 +85,7 @@ namespace UMSAgent.Model
             ClientData clientdata = new ClientData();
             clientdata.platform = "windows 8";
             clientdata.os_version = Utility.getOsVersion();
-            clientdata.language =WebUtility.UrlEncode( CultureInfo.CurrentCulture.DisplayName);
+            clientdata.language =WebUtility.UrlEncode( CultureInfo.CurrentCulture.Name);
             clientdata.resolution = UMSApi.device_resolution;
             clientdata.deviceid = Utility.getDeviceId();
             clientdata.devicename = Utility.getDeviceName();// DeviceExtendedProperties.GetValue("DeviceName").ToString();
