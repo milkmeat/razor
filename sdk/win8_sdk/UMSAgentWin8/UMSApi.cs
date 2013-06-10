@@ -22,6 +22,7 @@ using System.Threading;
 using UMSAgent.UMS;
 using Windows.System.Threading;
 using Windows.UI.Xaml;
+using System.Diagnostics;
 
 
 namespace UMSAgent
@@ -92,12 +93,28 @@ namespace UMSAgent
 
         private static void postClientData()
         {
-            manager.clientDataProceed();
+            try
+            {
+                manager.clientDataProceed();
+            }
+            catch (Exception ex)
+            {
+                //do  nothing
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
 
         private static void postAllData()
         {
-            manager.allDataProceed();
+            try
+            {
+                manager.allDataProceed();
+            }
+            catch (Exception ex)
+            {
+                //do  nothing
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
 
         //static void app_Activiated(object sender, ActivatedEventArgs e)

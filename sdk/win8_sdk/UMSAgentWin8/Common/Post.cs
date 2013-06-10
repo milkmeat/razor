@@ -70,8 +70,18 @@ namespace UMSAgent.Common
             HttpContent httpContent = new StringContent("content="+this.message);//TODO convert to UTF8
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
 
-            HttpResponseMessage response = await client.PostAsync(url, httpContent);
-            DebugTool.Log("post response:" + response);
+            HttpResponseMessage response=null;
+
+            try
+            {
+                response = await client.PostAsync(url, httpContent);
+                DebugTool.Log("post response:" + response);
+            }
+            catch (HttpRequestException ex)
+            {
+                //do nothing
+                response = null;
+            }
 
             if (response == null || response.StatusCode != HttpStatusCode.OK)
             {

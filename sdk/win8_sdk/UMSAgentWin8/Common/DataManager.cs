@@ -161,7 +161,7 @@ namespace UMSAgent.Common
         public void pageInfoDataProceed(PageInfo obj)
         {
 
-            if (ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY)=="1" && Utility.isNetWorkConnected())
+            if ("1".Equals(ApplicationSettings.GetSetting<string>(SettingKeys.REPORT_POLICY)) && Utility.isNetWorkConnected())
             {
                 Post post = new Post((int)UMSAgent.UMSApi.DataType.PAGEINFODATA, obj);
                 post.stateChanged += new Post.stateChangedHandler(this.getData);

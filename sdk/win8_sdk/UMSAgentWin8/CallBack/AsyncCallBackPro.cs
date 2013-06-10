@@ -133,8 +133,6 @@ namespace UMSAgent.CallBcak
                 ApplicationSettings.SetSetting<string>(SettingKeys.UPDATE_ONLY_WIFI, o.updateonlywifi);
                 ApplicationSettings.SetSetting<string>(SettingKeys.REPORT_POLICY, o.reportpolicy);
                 ApplicationSettings.SetSetting<string>(SettingKeys.AUTO_LOCATION, o.autogetlocation);
-                ApplicationSettings.SetSetting<string>(SettingKeys.UPDATE_ONLY_WIFI, o.updateonlywifi);
-              
             }
 
             DebugTool.Log("call back of onlineconfig data------" + msg);
