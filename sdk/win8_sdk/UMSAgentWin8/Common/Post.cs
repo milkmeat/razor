@@ -24,6 +24,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Diagnostics;
 using UMSAgentWin8.Common;
+using System.Threading.Tasks;
 
 namespace UMSAgent.Common
 {
@@ -43,14 +44,12 @@ namespace UMSAgent.Common
         {
             this.type = type;
             this.obj = obj;
-            getPostInfo(type, obj);
-        
         }
 
-        private void getPostInfo(int type,object data)
+        private async Task getPostInfo()
         {
             Obj2Json o = new Obj2Json();
-            message = o.obj2jsonstr(data,type);
+            message = await o.obj2jsonstr(this.obj,this.type);
            
         }
         
@@ -66,6 +65,9 @@ namespace UMSAgent.Common
             //myRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), myRequest);
 
             HttpClient client = new GZipHttpClient();
+
+            //must call  getPostInfo() to initialize the message first
+            await getPostInfo();
 
             HttpContent httpContent = new StringContent("content="+this.message);//TODO convert to UTF8
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");

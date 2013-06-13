@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Text;
 using UMSAgent.UMS;
 using UMSAgentWin8.Common;
+using System.Threading.Tasks;
 //using System.Runtime.Serialization.Json;
 
 
@@ -35,7 +36,7 @@ namespace UMSAgent.Common
 {
     public class Obj2Json
     {
-        public string obj2jsonstr(object obj, int type)
+        public async Task<string> obj2jsonstr(object obj, int type)
         {
            
             string ret = "";
@@ -58,7 +59,7 @@ namespace UMSAgent.Common
                     ret = eventData2jsonstr(e);
                     break;
                 case 4://all data
-                    ret = allData2jsonstr();
+                    ret = await allData2jsonstr();
                     break;
                 case 5://error 
                     ErrorInfo err =(ErrorInfo)obj;
@@ -125,16 +126,21 @@ namespace UMSAgent.Common
         }
 
         //all data
-        private string allData2jsonstr()
+        private async Task<string> allData2jsonstr()
         {
             AllInfo allinfo = new AllInfo();
             allinfo.appkey = UmsManager.appkey;
             string ret = "";
             Windows.Storage.ApplicationDataContainer settings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            allinfo.clientData = ApplicationSettings.GetSetting<List<ClientData>>(SettingKeys.CLIENT_DATA, null);
-            allinfo.eventInfo = ApplicationSettings.GetSetting<List<Event>>(SettingKeys.EVENT_DATA, null);
-            allinfo.activityInfo = ApplicationSettings.GetSetting<List<PageInfo>>(SettingKeys.PAGE_INFO, null);
+            allinfo.clientData = await ApplicationSettings.GetSettingFromXmlFileAsync<List<ClientData>>(SettingKeys.CLIENT_DATA, null);
+            allinfo.eventInfo = await ApplicationSettings.GetSettingFromXmlFileAsync<List<Event>>(SettingKeys.EVENT_DATA, null);
+            allinfo.activityInfo = await ApplicationSettings.GetSettingFromXmlFileAsync<List<PageInfo>>(SettingKeys.PAGE_INFO, null);
+
+            //patch: we nolonger use in storage settings anymore, just remove it for old versions
+            ApplicationSettings.RemoveSetting(SettingKeys.CLIENT_DATA);
+            ApplicationSettings.RemoveSetting(SettingKeys.EVENT_DATA);
+            ApplicationSettings.RemoveSetting(SettingKeys.PAGE_INFO);
 
             try
             {

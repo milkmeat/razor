@@ -95,7 +95,8 @@ namespace UMSAgent
         {
             try
             {
-                manager.clientDataProceed();
+                if (manager != null)
+                { manager.clientDataProceed(); }
             }
             catch (Exception ex)
             {
@@ -108,7 +109,8 @@ namespace UMSAgent
         {
             try
             {
-                manager.allDataProceed();
+                if (manager != null)
+                { manager.allDataProceed(); }
             }
             catch (Exception ex)
             {
@@ -162,7 +164,8 @@ namespace UMSAgent
 
         private static void checkNewVersion()
         {
-            manager.checkNewVersionProceed(Utility.getApplicationVersion());
+            if (manager != null)
+            { manager.checkNewVersionProceed(Utility.getApplicationVersion()); }
         }
 
         
@@ -171,23 +174,27 @@ namespace UMSAgent
         public static void onEvent(string event_id,string pagename)
         {
            // DebugTool.Log( Utility.getCurrentPageName());
-            manager.eventDataProceed(event_id, pagename);
+            if (manager != null)
+            { manager.eventDataProceed(event_id, pagename); }
         }
 
         //upload event with lable
         public static void onEvent(string event_id, string pagename,string label)
         {
-            manager.eventDataProceed(event_id, pagename, label);
+            if (manager != null)
+            { manager.eventDataProceed(event_id, pagename, label); }
         }
         //upload event with excuted times 
         public static void onEvent(string event_id, string pagename, int acc)
         {
-            manager.eventDataProceed(event_id, pagename,"",acc);
+            if (manager != null)
+            { manager.eventDataProceed(event_id, pagename, "", acc); }
         }
         //upload event with lable and  excuted times 
         public static void onEvent(string event_id, string pagename, string label, int acc)
         {
-            manager.eventDataProceed(event_id, pagename, label,acc);
+            if (manager != null)
+            { manager.eventDataProceed(event_id, pagename, label, acc); }
         }
 
         //get online config preference
@@ -199,12 +206,14 @@ namespace UMSAgent
         }
         private static void getConfigpreference()
         {
-            manager.onlineConfigProceed();
+            if (manager != null)
+            { manager.onlineConfigProceed(); }
         }
         //on crash
         private static void onCrash(object sender, UnhandledExceptionEventArgs e)
         {
-            manager.crashDataProceed(e);
+            if (manager != null)
+            { manager.crashDataProceed(e); }
         }
         // page visit when open current page 
         public static void onPageBegin(string name)
