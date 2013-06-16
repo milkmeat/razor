@@ -23,6 +23,7 @@ using UMSAgent.UMS;
 using Windows.System.Threading;
 using Windows.UI.Xaml;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 
 namespace UMSAgent
@@ -70,7 +71,7 @@ namespace UMSAgent
                 //new Thread(new ThreadStart(postClientData)).Start();
                 //new Thread(new ThreadStart(postAllData)).Start();
                 //no need to await
-                ThreadPool.RunAsync((source) => { postClientData();});
+                ThreadPool.RunAsync(async (source) => { await postClientData();});
                 ThreadPool.RunAsync((source) => { postAllData(); });
             }
             
@@ -90,13 +91,14 @@ namespace UMSAgent
             onCrash(sender, e);
         }
        
-
-        private static void postClientData()
+        //It is ok to async call SystemInfo here because it's run only once at startup. and in a separate thread.
+        //there will no be performance issue.
+        private static async Task postClientData()
         {
             try
             {
                 if (manager != null)
-                { manager.clientDataProceed(); }
+                { await manager.clientDataProceed(); }
             }
             catch (Exception ex)
             {

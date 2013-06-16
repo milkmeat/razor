@@ -30,6 +30,7 @@ using UMSAgent.MyObject;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using UMSAgentWin8.Common;
+using System.Threading.Tasks;
 
 
 
@@ -53,9 +54,9 @@ namespace UMSAgent.Common
         }
 
         //client data proceed
-        public void clientDataProceed()
+        public async Task clientDataProceed()
         {
-            ClientData obj =  model.getClientData();
+            ClientData obj =  await model.getClientData();
         
             if (Utility.isNetWorkConnected())
             {

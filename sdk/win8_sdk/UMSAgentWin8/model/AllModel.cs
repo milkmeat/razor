@@ -31,6 +31,7 @@ using UMSAgent.MyObject;
 //using System.IO.IsolatedStorage;
 using UMSAgent.UMS;
 using UMSAgentWin8.Common;
+using System.Threading.Tasks;
 
 
 namespace UMSAgent.Model
@@ -80,15 +81,15 @@ namespace UMSAgent.Model
         }
       
         //get client data
-        public ClientData getClientData()
+        public async Task<ClientData> getClientData()
         {
             ClientData clientdata = new ClientData();
-            clientdata.platform = "windows 8";
-            clientdata.os_version = Utility.getOsVersion();
+            clientdata.platform = (await SystemInfo.GetProcessorArchitectureAsync()).ToString();
+            clientdata.os_version = await SystemInfo.GetWindowsVersionAsync(); //Utility.getOsVersion();
             clientdata.language =WebUtility.UrlEncode( CultureInfo.CurrentCulture.Name);
             clientdata.resolution = UMSApi.device_resolution;
             clientdata.deviceid = Utility.getDeviceId();
-            clientdata.devicename = Utility.getDeviceName();// DeviceExtendedProperties.GetValue("DeviceName").ToString();
+            clientdata.devicename = await SystemInfo.GetDeviceManufacturerAsync()+"-"+await SystemInfo.GetDeviceCategoryAsync()+"-"+ await SystemInfo.GetDeviceModelAsync(); //Utility.getDeviceName();// DeviceExtendedProperties.GetValue("DeviceName").ToString();
             clientdata.version = Utility.getApplicationVersion();
             clientdata.appkey = key;
             clientdata.time = Utility.getTime();
@@ -110,7 +111,7 @@ namespace UMSAgent.Model
                 clientdata.latitude = "";
                 clientdata.longitude = "";
             }
-            clientdata.isMobileDevice = true;
+            clientdata.isMobileDevice = false;
 
             clientdata.network = Utility.GetNetStates();
             clientdata.defaultbrowser = "";
