@@ -42,7 +42,7 @@ namespace UMSTestWin8
 
         private void xTestButton_Click(object sender, RoutedEventArgs e)
         {
-            UMSAgent.UMSApi.onEvent("mycontact", "中文测试");
+            UMSAgent.UMSApi.myEvent("mycontact", "中文测试");
         }
 
         private void xExceptionButton_Click(object sender, RoutedEventArgs e)

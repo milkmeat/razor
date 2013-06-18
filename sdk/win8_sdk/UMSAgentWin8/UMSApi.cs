@@ -170,6 +170,13 @@ namespace UMSAgent
             { manager.checkNewVersionProceed(Utility.getApplicationVersion()); }
         }
 
+        //I doubt that the server event_id look up might be wrong, so I wrap my own event handler
+        public static void myEvent(string event_id, string label, int count=1)
+        {
+            // DebugTool.Log( Utility.getCurrentPageName());
+            if (manager != null)
+            { manager.eventDataProceed(event_id, event_id, label, count); }
+        }
         
 
         //upload event
