@@ -72,7 +72,7 @@ namespace UMSAgent.Common
 
         internal static void RemoveErrorLog()
         {
-            ApplicationSettings.RemoveSetting(SettingKeys.ERROR_DATA);
+            //ApplicationSettings.RemoveSetting(SettingKeys.ERROR_DATA);
             ApplicationSettings.RemoveSetting(LAST_ERROR_LOG);
         }
     }

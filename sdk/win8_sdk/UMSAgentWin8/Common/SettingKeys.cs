@@ -12,7 +12,7 @@ namespace UMSAgentWin8.Common
         public static readonly string CLIENT_DATA = "clientdata";
         public static readonly string EVENT_DATA = "eventdata";
         public static readonly string PAGE_INFO = "pageinfo";
-        public static readonly string ERROR_DATA = "errordata";
+        //public static readonly string ERROR_DATA = "errordata";
         public static readonly string HAS_DATA_TO_SEND = "hasDataToSend";
 
 

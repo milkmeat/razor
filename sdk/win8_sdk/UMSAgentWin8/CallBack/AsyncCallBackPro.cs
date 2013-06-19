@@ -29,6 +29,7 @@ using System.Text;
 //using Microsoft.Phone.Tasks;
 using UMSAgent.MyObject;
 using UMSAgentWin8.Common;
+using System.Threading.Tasks;
 
 namespace UMSAgent.CallBcak
 {
@@ -93,7 +94,7 @@ namespace UMSAgent.CallBcak
             }
            
         }
-        public static void call_back_process_alldata(string msg, object obj)
+        public static async Task call_back_process_alldata(string msg, object obj)
         {
             DebugTool.Log("call back of all data------" + msg);
             CommonRet o = (CommonRet)getJsonObj(msg);
@@ -105,9 +106,15 @@ namespace UMSAgent.CallBcak
 
                 ApplicationSettings.RemoveSetting(SettingKeys.CLIENT_DATA);
                 ApplicationSettings.RemoveSetting(SettingKeys.EVENT_DATA);
-                ApplicationSettings.RemoveSetting(SettingKeys.ERROR_DATA);
+                //ApplicationSettings.RemoveSetting(SettingKeys.ERROR_DATA);
                 ApplicationSettings.RemoveSetting(SettingKeys.PAGE_INFO);
                 ApplicationSettings.RemoveSetting(SettingKeys.HAS_DATA_TO_SEND);
+
+                await ApplicationSettings.RemoveSettingFromXmlFileAsync(SettingKeys.CLIENT_DATA);
+                await ApplicationSettings.RemoveSettingFromXmlFileAsync(SettingKeys.EVENT_DATA);
+                //ApplicationSettings.RemoveSettingFromXmlFileAsync(SettingKeys.ERROR_DATA);
+                await ApplicationSettings.RemoveSettingFromXmlFileAsync(SettingKeys.PAGE_INFO);
+                //ApplicationSettings.RemoveSetting(SettingKeys.HAS_DATA_TO_SEND);
 
                 CrashListener.RemoveErrorLog();
                 

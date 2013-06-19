@@ -177,7 +177,8 @@ namespace UMSAgent.Common
         }
 
         //get data from server 
-        private void getData(int type,string s, object obj)
+        //It is ok to use async void here, as long as post.stateChanged is always called as the last action in callback
+        private async void getData(int type,string s, object obj)
         {
 
             if (type == (int)UMSApi.DataType.UPDATEDATA)
@@ -189,7 +190,7 @@ namespace UMSAgent.Common
 
             if (type == (int)UMSApi.DataType.AllDATA)
             {
-                AsyncCallBackPro.call_back_process_alldata(s,obj);
+                await AsyncCallBackPro.call_back_process_alldata(s,obj);
             }
             if (type == (int)UMSApi.DataType.CLIENTDATA)
             {

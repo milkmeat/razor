@@ -91,6 +91,14 @@ namespace UMSAgentWin8.Common
             await FileIO.WriteTextAsync(file, xml, Windows.Storage.Streams.UnicodeEncoding.Utf8);
         }
 
+        public static async Task RemoveSettingFromXmlFileAsync(string key, bool roaming = false)
+        {
+            var file = roaming ? await ApplicationData.Current.RoamingFolder.CreateFileAsync(key + ".settings", CreationCollisionOption.ReplaceExisting) :
+                await ApplicationData.Current.LocalFolder.CreateFileAsync(key + ".settings", CreationCollisionOption.ReplaceExisting);
+
+            await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
+        }
+
         public static async Task<T> GetSettingFromXmlFileAsync<T>(string key, T defaultValue, bool roaming = false, Type[] extraTypes = null)
         {
             var file = roaming ? await ApplicationData.Current.RoamingFolder.CreateFileAsync(key + ".settings", CreationCollisionOption.OpenIfExists) :
