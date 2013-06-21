@@ -100,25 +100,30 @@ namespace UMSAgent.Common
         {
             string APP_UNIQ_ID = "APP_UNIQ_ID";
 
-            if (ApplicationSettings.HasSetting<string>(APP_UNIQ_ID))
-            {
-                return ApplicationSettings.GetSetting<string>(APP_UNIQ_ID);
-            }
-            else
-            {
-                string tokenStr;
-                var token = HardwareIdentification.GetPackageSpecificToken(null);
-                var stream = token.Id.AsStream();
-                using (var reader = new BinaryReader(stream))
-                {
-                    var bytes = reader.ReadBytes((int)stream.Length);
-                    tokenStr = BitConverter.ToString(bytes);
-                }
 
-                ApplicationSettings.SetSetting<string>(APP_UNIQ_ID, tokenStr);
+            string cachedStr = ApplicationSettings.GetSetting<string>(APP_UNIQ_ID, null);
 
-                return tokenStr;
+            if (!string.IsNullOrEmpty(cachedStr) && cachedStr.IndexOf('-')<0)
+            {
+                return cachedStr;
             }
+
+            string tokenStr;
+            var token = HardwareIdentification.GetPackageSpecificToken(null);
+            var stream = token.Id.AsStream();
+            using (var reader = new BinaryReader(stream))
+            {
+                var bytes = reader.ReadBytes((int)stream.Length);
+                tokenStr = BitConverter.ToString(bytes);
+            }
+
+            //remove the - from id string to save space
+            tokenStr=tokenStr.Replace("-","");
+
+            ApplicationSettings.SetSetting<string>(APP_UNIQ_ID, tokenStr);
+
+            return tokenStr;
+
         }
 
         //get lati and longi

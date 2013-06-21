@@ -170,12 +170,20 @@ namespace UMSAgent
             { manager.checkNewVersionProceed(Utility.getApplicationVersion()); }
         }
 
-        //I doubt that the server event_id look up might be wrong, so I wrap my own event handler
-        public static void myEvent(string event_id, string label, int count=1)
+        //1. put device id in label
+        //2. put event.{eventParam} as event activity (the doc calls it pagename)
+        public static void myEvent(string event_id, string param, int count=1)
         {
-            // DebugTool.Log( Utility.getCurrentPageName());
             if (manager != null)
-            { manager.eventDataProceed(event_id, event_id, label, count); }
+            {
+                if (string.IsNullOrEmpty(event_id))
+                { return; }
+
+                string activity = event_id;
+                if (!string.IsNullOrEmpty(param))
+                { activity += "." + param; }
+                manager.eventDataProceed(event_id, activity, Utility.getDeviceId(), count); 
+            }
         }
         
 
