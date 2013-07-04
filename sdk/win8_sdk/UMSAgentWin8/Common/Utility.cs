@@ -103,7 +103,7 @@ namespace UMSAgent.Common
 
             string cachedStr = ApplicationSettings.GetSetting<string>(APP_UNIQ_ID, null);
 
-            if (!string.IsNullOrEmpty(cachedStr) && cachedStr.IndexOf('-')<0)
+            if (!string.IsNullOrEmpty(cachedStr) && cachedStr.Length<48 && cachedStr.IndexOf('-')<0)
             {
                 return cachedStr;
             }
@@ -114,11 +114,11 @@ namespace UMSAgent.Common
             using (var reader = new BinaryReader(stream))
             {
                 var bytes = reader.ReadBytes((int)stream.Length);
-                tokenStr = BitConverter.ToString(bytes);
+                tokenStr = Convert.ToBase64String(bytes); //use base64 to save some space
             }
 
             //remove the - from id string to save space
-            tokenStr=tokenStr.Replace("-","");
+            //tokenStr=tokenStr.Replace("-","");
 
             ApplicationSettings.SetSetting<string>(APP_UNIQ_ID, tokenStr);
 

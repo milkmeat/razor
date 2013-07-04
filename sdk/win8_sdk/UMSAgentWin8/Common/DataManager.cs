@@ -153,7 +153,7 @@ namespace UMSAgent.Common
             error.time = Utility.getTime();
             error.version = Utility.getApplicationVersion() == null ? "" : Utility.getApplicationVersion();
             error.activity = Utility.getCurrentPageName();
-            error.deviceid = Utility.getDeviceName();
+            error.deviceid = Utility.getDeviceId();
             error.os_version = Utility.getOsVersion();
             string error_info = UmsJson.Serialize(error);
             CrashListener.ReportException(error_info, flag);
