@@ -36,6 +36,9 @@ using UMSAgentWin8.Common;
 using Windows.System.Profile;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.IO;
+using Windows.Security.Cryptography.Core;
+using Windows.Security.Cryptography;
+using Windows.Storage.Streams;
 
 
 namespace UMSAgent.Common
@@ -103,7 +106,7 @@ namespace UMSAgent.Common
 
             string cachedStr = ApplicationSettings.GetSetting<string>(APP_UNIQ_ID, null);
 
-            if (!string.IsNullOrEmpty(cachedStr) && cachedStr.Length<48 && cachedStr.IndexOf('-')<0)
+            if (!string.IsNullOrEmpty(cachedStr) && cachedStr.Length<=32 && cachedStr.IndexOf('-')<0)
             {
                 return cachedStr;
             }
@@ -113,8 +116,8 @@ namespace UMSAgent.Common
             var stream = token.Id.AsStream();
             using (var reader = new BinaryReader(stream))
             {
-                var bytes = reader.ReadBytes((int)stream.Length);
-                tokenStr = Convert.ToBase64String(bytes); //use base64 to save some space
+                byte[] bytes = reader.ReadBytes((int)stream.Length);
+                tokenStr = ComputeMD5(bytes); //use md5 to save some space
             }
 
             //remove the - from id string to save space
@@ -124,6 +127,15 @@ namespace UMSAgent.Common
 
             return tokenStr;
 
+        }
+
+        private static string ComputeMD5(byte[] bytes)
+        {
+            var alg = HashAlgorithmProvider.OpenAlgorithm("MD5");
+            IBuffer buff = bytes.AsBuffer();
+            var hashed = alg.HashData(buff);
+            var res = CryptographicBuffer.EncodeToHexString(hashed);
+            return res;
         }
 
         //get lati and longi
